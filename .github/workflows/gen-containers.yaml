@@ -9,6 +9,9 @@ jobs:
 
     name: Build image without Containerfile
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
     # - name: install deps for multi-arch builds
@@ -21,7 +24,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         base-image: docker.io/alpine:3.17.2
-        image: bottlerocket-modprobe
+        image: ${{ github.repository }}
         tags: ${{ matrix.module }}
         entrypoint: chroot /.bottlerocket/rootfs modprobe ${{ matrix.module }}
         # platforms: linux/arm64/v8, linux/amd64, linux/arm/v7, linux/arm/v6
