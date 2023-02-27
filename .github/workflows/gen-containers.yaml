@@ -21,7 +21,8 @@ jobs:
         image: bottlerocket-modprobe
         tags: ${{ matrix.module }}
         entrypoint: chroot /.bottlerocket/rootfs modprobe ${{ matrix.module }}
-        platforms: linux/arm64/v8, linux/amd64, linux/arm/v7, linux/arm/v6
+        # platforms: linux/arm64/v8, linux/amd64, linux/arm/v7, linux/arm/v6
+        arch: amd64, arm64, arm
 
     - name: Log into to registry GHCR
       uses: redhat-actions/podman-login@v1
@@ -29,3 +30,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ github.token }}
         registry: ghcr.io/${{ github.repository_owner }}
+
+    - name: Push image to GHCR
+      uses: redhat-actions/push-to-registry@v2
+      id: push
+      with:
+        tags: ${{ steps.build_image.outputs.tags }}
+
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push.outputs.registry-paths }}"
