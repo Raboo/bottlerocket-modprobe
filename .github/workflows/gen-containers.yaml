@@ -16,7 +16,8 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
 
-    - name: Build Image with Buildah
+    - name: Build Image
+      id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
         base-image: docker.io/alpine:3.17.2
@@ -43,7 +44,8 @@ jobs:
       uses: redhat-actions/push-to-registry@v2
       id: push
       with:
-        tags: ${{ steps.build_image.outputs.tags }}
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push.outputs.registry-paths }}"
