@@ -27,12 +27,18 @@ jobs:
         # platforms: linux/arm64/v8, linux/amd64, linux/arm/v7, linux/arm/v6
         arch: amd64, arm64, arm
 
+    - name: set lower case owner name
+      run: |
+        echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+      env:
+        OWNER: '${{ github.repository_owner }}'
+
     - name: Log into to registry GHCR
       uses: redhat-actions/podman-login@v1
       with:
         username: ${{ github.actor }}
         password: ${{ github.token }}
-        registry: ghcr.io/${{ github.repository_owner }}
+        registry: ghcr.io/${{ env.OWNER_LC }}
 
     - name: Push image to GHCR
       uses: redhat-actions/push-to-registry@v2
