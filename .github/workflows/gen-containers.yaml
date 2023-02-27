@@ -33,19 +33,15 @@ jobs:
       env:
         OWNER: '${{ github.repository_owner }}'
 
-    - name: Log into to registry GHCR
-      uses: redhat-actions/podman-login@v1
-      with:
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
-        registry: ghcr.io/${{ env.OWNER_LC }}
-
     - name: Push image to GHCR
       uses: redhat-actions/push-to-registry@v2
       id: push
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+        registry: ghcr.io/${{ env.OWNER_LC }}
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push.outputs.registry-paths }}"
