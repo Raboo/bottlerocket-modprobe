@@ -23,12 +23,12 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        base-image: docker.io/alpine:3.17.2
+        base-image: docker.io/alpine:3.17.3
         image: bottlerocket-modprobe
         tags: ${{ matrix.module }}
         entrypoint: chroot /.bottlerocket/rootfs modprobe ${{ matrix.module }}
-        # platforms: linux/arm64/v8, linux/amd64, linux/arm/v7, linux/arm/v6
-        arch: amd64, arm64, arm
+        platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm/v7, linux/arm/v6, linux/386
+        # arch: amd64, arm64, arm
 
     - name: set lower case owner name
       run: |
