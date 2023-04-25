@@ -27,8 +27,9 @@ jobs:
         image: bottlerocket-modprobe
         tags: ${{ matrix.module }}
         entrypoint: chroot /.bottlerocket/rootfs modprobe ${{ matrix.module }}
-        platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm/v7, linux/arm/v6, linux/386
-        # arch: amd64, arm64, arm
+        # platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm/v7, linux/arm/v6, linux/386
+        # Can't use plaform cause of 'Error: The --platform option is not supported for builds without containerfiles.'
+        archs: amd64, arm64, arm
 
     - name: set lower case owner name
       run: |
